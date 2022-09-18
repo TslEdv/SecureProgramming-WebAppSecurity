@@ -9,16 +9,15 @@ public static class Helper
         do
         {
             validInput = true;
-            Console.WriteLine($"Input alphabet (enter for default) [{defaultAlphabet}]");
+            Console.WriteLine($"Input alphabet (enter for default)(type exit to exit) [{defaultAlphabet}]");
 
             userAlphabet = Console.ReadLine();
-
             if (string.IsNullOrWhiteSpace(userAlphabet) ||
                 userAlphabet.Length == 1)
             {
                 userAlphabet = defaultAlphabet;
             }
-
+            ExitApp(userAlphabet);
             var charHashset = new HashSet<char>();
 
             foreach (var chr in userAlphabet)
@@ -44,13 +43,14 @@ public static class Helper
         do
         {
             validInput = true;
-            Console.WriteLine("Cesar shift amount (enter for 1): ");
+            Console.WriteLine("Cesar shift amount (enter for 1)(type exit to exit): ");
             var input = Console.ReadLine();
             if (string.IsNullOrWhiteSpace(input))
             {
                 shiftAmount = 1;
                 continue;
             }
+            ExitApp(input);
             var success = int.TryParse(input, out shiftAmount);
             if (success)
             {
@@ -73,5 +73,12 @@ public static class Helper
         } while (validInput == false);
 
         return shiftAmount;
+    }
+    private static void ExitApp(string input)
+    {
+        input = input.Trim().ToUpper();
+        if (input != "EXIT") return;
+        Console.WriteLine("Exiting application...");
+        Environment.Exit(0);
     }
 }
