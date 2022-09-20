@@ -33,7 +33,7 @@ public static class Helper
             }
         } while (validInput == false);
 
-        return userAlphabet;
+        return userAlphabet.ToUpper();
     }
 
     public static int GetCesarShift(int alphabetLength)
@@ -54,14 +54,14 @@ public static class Helper
             var success = int.TryParse(input, out shiftAmount);
             if (success)
             {
-                if (shiftAmount % alphabetLength == 0)
+                if (Mod(shiftAmount, alphabetLength) == 0)
                 {
                     Console.WriteLine("Incorrect input, length of alphabet and shift is same amount!");
                     validInput = false;
                 }
                 else
                 {
-                    shiftAmount %= alphabetLength;
+                    shiftAmount = Mod(shiftAmount, alphabetLength);
                 }
             }
             else
@@ -80,5 +80,8 @@ public static class Helper
         if (input != "EXIT") return;
         Console.WriteLine("Exiting application...");
         Environment.Exit(0);
+    }
+    private static int Mod(int x, int m) {
+        return (x%m + m)%m;
     }
 }
