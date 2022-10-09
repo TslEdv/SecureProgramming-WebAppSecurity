@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VigenereHomework", "Vigener
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiffieHellman", "DiffieHellman\DiffieHellman.csproj", "{9545DCF0-D16A-4DAE-9844-3BE430350C21}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApp", "WebApp\WebApp.csproj", "{C57F5F29-4AB0-4D21-BFDD-8D0E265D8B01}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{9545DCF0-D16A-4DAE-9844-3BE430350C21}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9545DCF0-D16A-4DAE-9844-3BE430350C21}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9545DCF0-D16A-4DAE-9844-3BE430350C21}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C57F5F29-4AB0-4D21-BFDD-8D0E265D8B01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C57F5F29-4AB0-4D21-BFDD-8D0E265D8B01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C57F5F29-4AB0-4D21-BFDD-8D0E265D8B01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C57F5F29-4AB0-4D21-BFDD-8D0E265D8B01}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
