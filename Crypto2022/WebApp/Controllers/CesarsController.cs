@@ -1,15 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WebApp.Data;
 using WebApp.Domain;
 
 namespace WebApp.Controllers
 {
+    [Authorize]
     public class CesarsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -22,9 +20,20 @@ namespace WebApp.Controllers
         // GET: Cesars
         public async Task<IActionResult> Index()
         {
-              return _context.Cesars != null ? 
-                          View(await _context.Cesars.ToListAsync()) :
-                          Problem("Entity set 'ApplicationDbContext.Cesars'  is null.");
+            var applicationDbContext =
+                _context
+                    .Cesars
+                    .Where(c => c.AppUserId == GetLoggedInUserId())
+                    .Include(c => c.AppUser);
+
+
+            return View(await applicationDbContext.ToListAsync());
+        }
+
+        public string GetLoggedInUserId()
+        {
+            return User.Claims.First(cm =>
+                cm.Type == ClaimTypes.NameIdentifier).Value;
         }
 
         // GET: Cesars/Details/5
@@ -35,7 +44,14 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
+            var isOwned = await _context.Cesars.AnyAsync(c => c.Id == id && c.AppUserId == GetLoggedInUserId());
+            if (!isOwned)
+            {
+                return NotFound();
+            }
+            
             var cesar = await _context.Cesars
+                .Include(c => c.AppUser)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (cesar == null)
             {
@@ -56,14 +72,18 @@ namespace WebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,ShiftAmount,PlainText,CipherText")] Cesar cesar)
+        public async Task<IActionResult> Create(Cesar cesar)
         {
+            cesar.AppUserId = GetLoggedInUserId();
+            var encryptedText = Helpers.CesarHelper.CesarEncodeByteShift(cesar.PlainText, cesar.ShiftAmount);
+            cesar.CipherText = encryptedText;
             if (ModelState.IsValid)
             {
                 _context.Add(cesar);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
             return View(cesar);
         }
 
@@ -75,11 +95,14 @@ namespace WebApp.Controllers
                 return NotFound();
             }
 
-            var cesar = await _context.Cesars.FindAsync(id);
+            var cesar = await _context.Cesars
+                .SingleOrDefaultAsync(c => c.AppUserId == GetLoggedInUserId() && c.Id == id);
+            
             if (cesar == null)
             {
                 return NotFound();
             }
+
             return View(cesar);
         }
 
@@ -88,13 +111,22 @@ namespace WebApp.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,ShiftAmount,PlainText,CipherText")] Cesar cesar)
+        public async Task<IActionResult> Edit(int id,
+            Cesar cesar)
         {
             if (id != cesar.Id)
             {
                 return NotFound();
             }
-
+            
+            var isOwned = await _context.Cesars.AnyAsync(c => c.Id == id && c.AppUserId == GetLoggedInUserId());
+            if (!isOwned)
+            {
+                return NotFound();
+            }
+            cesar.AppUserId = GetLoggedInUserId();
+            var encryptedText = Helpers.CesarHelper.CesarEncodeByteShift(cesar.PlainText, cesar.ShiftAmount);
+            cesar.CipherText = encryptedText;
             if (ModelState.IsValid)
             {
                 try
@@ -113,8 +145,10 @@ namespace WebApp.Controllers
                         throw;
                     }
                 }
+
                 return RedirectToAction(nameof(Index));
             }
+
             return View(cesar);
         }
 
@@ -127,6 +161,7 @@ namespace WebApp.Controllers
             }
 
             var cesar = await _context.Cesars
+                .Include(c => c.AppUser)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (cesar == null)
             {
@@ -145,19 +180,24 @@ namespace WebApp.Controllers
             {
                 return Problem("Entity set 'ApplicationDbContext.Cesars'  is null.");
             }
+            var isOwned = await _context.Cesars.AnyAsync(c => c.Id == id && c.AppUserId == GetLoggedInUserId());
+            if (!isOwned)
+            {
+                return NotFound();
+            }
             var cesar = await _context.Cesars.FindAsync(id);
             if (cesar != null)
             {
                 _context.Cesars.Remove(cesar);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool CesarExists(int id)
         {
-          return (_context.Cesars?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Cesars?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

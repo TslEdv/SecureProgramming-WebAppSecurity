@@ -1,3 +1,5 @@
+@using static WebApp.Helpers.CesarHelper
+@using WebApp.Helpers
 @model WebApp.Domain.Cesar
 
 @{
@@ -27,6 +29,18 @@
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.CipherText)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.AppUser)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.AppUser!.Id)
+        </dd>
+        <dt class = "col-sm-2">
+            Decoded
+        </dt>
+        <dd class = "col-sm-10">
+            @CesarDecodeByteShift(Model.CipherText, Model.ShiftAmount)
         </dd>
     </dl>
 </div>

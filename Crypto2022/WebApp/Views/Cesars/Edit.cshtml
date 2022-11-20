@@ -11,25 +11,22 @@
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
+            <input type="hidden" asp-for="AppUserId" value="@Guid.Empty" />
+            <input type="hidden" asp-for="CipherText" value="NOTHING" />
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="Id"/>
             <div class="form-group">
                 <label asp-for="ShiftAmount" class="control-label"></label>
-                <input asp-for="ShiftAmount" class="form-control" />
+                <input asp-for="ShiftAmount" class="form-control"/>
                 <span asp-validation-for="ShiftAmount" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="PlainText" class="control-label"></label>
-                <input asp-for="PlainText" class="form-control" />
+                <input asp-for="PlainText" class="form-control"/>
                 <span asp-validation-for="PlainText" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="CipherText" class="control-label"></label>
-                <input asp-for="CipherText" class="form-control" />
-                <span asp-validation-for="CipherText" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Save" class="btn btn-primary"/>
             </div>
         </form>
     </div>

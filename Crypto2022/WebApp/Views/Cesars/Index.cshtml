@@ -21,6 +21,9 @@
             <th>
                 @Html.DisplayNameFor(model => model.CipherText)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AppUser)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -35,6 +38,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.CipherText)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AppUser!.Email)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

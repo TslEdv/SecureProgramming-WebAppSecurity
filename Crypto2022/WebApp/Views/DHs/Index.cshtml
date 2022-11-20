@@ -1,0 +1,72 @@
+@model IEnumerable<WebApp.Domain.DH>
+@using WebApp.Helpers
+@using Microsoft.AspNetCore.Mvc.Razor
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Prime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Base)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ValueA)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ValueB)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CalculationX)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CalculationY)
+            </th>
+            <th>
+                Common Calculation
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Prime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Base)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ValueA)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ValueB)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CalculationX)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CalculationY)
+            </td>
+            <td>
+                @DiffieHellmanHelper.ModPow(item.CalculationX, item.ValueB, item.Prime) ; @DiffieHellmanHelper.ModPow(item.CalculationY, item.ValueA, item.Prime)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
