@@ -75,6 +75,8 @@ namespace WebApp.Controllers
         public async Task<IActionResult> Create(Cesar cesar)
         {
             cesar.AppUserId = GetLoggedInUserId();
+            cesar.ShiftAmount = Helpers.CesarHelper.GetCesarShift(cesar.ShiftAmount);
+
             var encryptedText = Helpers.CesarHelper.CesarEncodeByteShift(cesar.PlainText, cesar.ShiftAmount);
             cesar.CipherText = encryptedText;
             if (ModelState.IsValid)

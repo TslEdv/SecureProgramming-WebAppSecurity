@@ -15,4 +15,5 @@ public class ApplicationDbContext : IdentityDbContext<AppUser, IdentityRole, str
 
     public DbSet<Cesar> Cesars { get; set; } = default!;
     public DbSet<DH> DHs { get; set; } = default!;
+    public DbSet<RSA> RSAs { get; set; } = default!;
 }

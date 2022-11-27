@@ -6,5 +6,7 @@ public class AppUser : IdentityUser
 {
     public ICollection<Cesar>? Cesars { get; set; }
     public ICollection<DH>? DHs { get; set; }
+    public ICollection<RSA>? RSAs { get; set; }
+
 
 }

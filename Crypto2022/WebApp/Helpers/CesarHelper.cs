@@ -4,6 +4,14 @@ namespace WebApp.Helpers;
 
 public class CesarHelper
 {
+    private static int Mod(int x, int m) {
+        return (x%m + m)%m;
+    }
+    public static int GetCesarShift(int shiftAmount)
+    {
+        shiftAmount = Mod(shiftAmount, 255);
+        return shiftAmount;
+    }
     public static string CesarEncodeByteShift(string text, int shiftAmount)
     {
         var textBytes = Encoding.UTF8.GetBytes(text);
