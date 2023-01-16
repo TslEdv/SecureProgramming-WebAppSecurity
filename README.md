@@ -1,7 +1,4 @@
-# ics0031 -2022f
+# Secure Programming (ICS0022) - 2022 & Web Application Security (ICS0027)
 
-NAME: Edvin Ess
-
-CODE: 201739IVSB
-
-UNIID: edvess
+Throughout the course I had to code different encryption methods such as classic Cesar or Diffie-Helman
+with a few twists on them.
